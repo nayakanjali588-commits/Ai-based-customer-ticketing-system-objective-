@@ -1,173 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Customer Ticketing System</title>
-
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial, sans-serif;
-        }
-
-        body{
-            background:#f4f4f4;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            min-height:100vh;
-        }
-
-        .container{
-            width:450px;
-            background:white;
-            padding:25px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.2);
-        }
-
-        h1{
-            text-align:center;
-            color:#333;
-            margin-bottom:20px;
-        }
-
-        label{
-            font-weight:bold;
-        }
-
-        input, textarea{
-            width:100%;
-            padding:10px;
-            margin-top:5px;
-            margin-bottom:15px;
-            border:1px solid #ccc;
-            border-radius:5px;
-        }
-
-        button{
-            width:100%;
-            padding:12px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:5px;
-            cursor:pointer;
-            font-size:16px;
-        }
-
-        button:hover{
-            background:#0056b3;
-        }
-
-        .ticket{
-            margin-top:20px;
-            padding:15px;
-            background:#eef;
-            border-radius:5px;
-            display:none;
-        }
-
-        .high{
-            color:red;
-            font-weight:bold;
-        }
-
-        .medium{
-            color:orange;
-            font-weight:bold;
-        }
-
-        .low{
-            color:green;
-            font-weight:bold;
-        }
-    </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>AI Customer Ticketing System</h1>
+    <h1>AI-Based Customer Ticketing System</h1>
 
-    <label>Customer Name</label>
-    <input type="text" id="name" placeholder="Enter your name">
+    <form>
+        <label>Customer Name:</label><br>
+        <input type="text" id="name"><br><br>
 
-    <label>Email</label>
-    <input type="email" id="email" placeholder="Enter your email">
+        <label>Issue Description:</label><br>
+        <textarea id="issue" rows="4" cols="40"></textarea><br><br>
 
-    <label>Issue Description</label>
-    <textarea id="issue" rows="5" placeholder="Describe your issue"></textarea>
+        <button type="button" onclick="generateTicket()">
+            Create Ticket
+        </button>
+    </form>
 
-    <button onclick="createTicket()">Generate Ticket</button>
+    <h2>Ticket Details</h2>
+    <p id="result"></p>
 
-    <div class="ticket" id="ticket">
-        <h2>Ticket Details</h2>
-        <p><strong>Ticket ID:</strong> <span id="ticketId"></span></p>
-        <p><strong>Name:</strong> <span id="customerName"></span></p>
-        <p><strong>Email:</strong> <span id="customerEmail"></span></p>
-        <p><strong>Category:</strong> <span id="category"></span></p>
-        <p><strong>Priority:</strong> <span id="priority"></span></p>
-        <p><strong>Status:</strong> Open</p>
-    </div>
-</div>
+    <script>
+        function generateTicket() {
+            let name = document.getElementById("name").value;
+            let issue = document.getElementById("issue").value.toLowerCase();
 
-<script>
-function createTicket(){
+            let category = "General Inquiry";
+            let priority = "Low";
 
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let issue = document.getElementById("issue").value.toLowerCase();
+            if(issue.includes("payment") || issue.includes("refund")) {
+                category = "Billing";
+                priority = "High";
+            }
+            else if(issue.includes("login") || issue.includes("password")) {
+                category = "Account";
+                priority = "Medium";
+            }
+            else if(issue.includes("error") || issue.includes("bug")) {
+                category = "Technical Support";
+                priority = "High";
+            }
 
-    if(name === "" || email === "" || issue === ""){
-        alert("Please fill all fields");
-        return;
-    }
-
-    let category = "General Inquiry";
-    let priority = "Low";
-
-    if(issue.includes("payment") || issue.includes("refund")){
-        category = "Billing";
-        priority = "High";
-    }
-    else if(issue.includes("login") || issue.includes("password")){
-        category = "Account Support";
-        priority = "Medium";
-    }
-    else if(issue.includes("error") || issue.includes("bug")){
-        category = "Technical Support";
-        priority = "High";
-    }
-    else if(issue.includes("delivery") || issue.includes("order")){
-        category = "Order Support";
-        priority = "Medium";
-    }
-
-    let ticketId = "TKT" + Math.floor(Math.random() * 100000);
-
-    document.getElementById("ticket").style.display = "block";
-    document.getElementById("ticketId").innerText = ticketId;
-    document.getElementById("customerName").innerText = name;
-    document.getElementById("customerEmail").innerText = email;
-    document.getElementById("category").innerText = category;
-
-    let priorityElement = document.getElementById("priority");
-    priorityElement.innerText = priority;
-
-    if(priority === "High"){
-        priorityElement.className = "high";
-    }
-    else if(priority === "Medium"){
-        priorityElement.className = "medium";
-    }
-    else{
-        priorityElement.className = "low";
-    }
-}
-</script>
+            document.getElementById("result").innerHTML =
+                "<b>Customer:</b> " + name + "<br>" +
+                "<b>Category:</b> " + category + "<br>" +
+                "<b>Priority:</b> " + priority + "<br>" +
+                "<b>Status:</b> Open";
+        }
+    </script>
 
 </body>
-  </html>
+</html>
+
